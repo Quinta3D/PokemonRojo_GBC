@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -9,11 +10,12 @@
                    maximum-scale=1.0,
                    user-scalable=no">
 
-    <title>PokemonRojo_GBC</title>
+    <title>PokemonRojo</title>
 
     <style>
         * {
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         html,
@@ -24,6 +26,7 @@
             height: 100%;
             background: #000;
             overflow: hidden;
+            touch-action: none;
         }
 
         #game-container {
@@ -34,7 +37,53 @@
         }
 
         canvas {
-            touch-action: none;
+            touch-action: none !important;
+        }
+
+        /* Botón de pantalla completa */
+        #fullscreen-btn {
+            position: fixed;
+            top: 12px;
+            right: 12px;
+            z-index: 99999;
+
+            width: 45px;
+            height: 45px;
+
+            border: 2px solid #777;
+            border-radius: 50%;
+
+            background: rgba(0, 0, 0, 0.75);
+            color: white;
+
+            font-size: 20px;
+            cursor: pointer;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #fullscreen-btn:active {
+            transform: scale(0.9);
+        }
+
+        /* Pantalla vertical */
+        @media (orientation: portrait) {
+
+            #game-container {
+                width: 100vw;
+                height: 100vh;
+            }
+        }
+
+        /* Pantalla horizontal */
+        @media (orientation: landscape) {
+
+            #game-container {
+                width: 100vw;
+                height: 100vh;
+            }
         }
     </style>
 </head>
@@ -43,54 +92,130 @@
 
 <div id="game-container"></div>
 
+<!-- Botón Fullscreen -->
+<button id="fullscreen-btn" onclick="activarFullscreen()">⛶</button>
+
 <script>
-    // ==============================
-    // CONFIGURACIÓN EMULATORJS
-    // ==============================
+
+    // ==========================================
+    // CONFIGURACIÓN EMULATORJS - GAME BOY COLOR
+    // ==========================================
 
     // Contenedor
     var EJS_player = "#game-container";
 
-    // Game Boy / Game Boy Color
-    var EJS_core = "gbc";
+    // Núcleo Game Boy / Game Boy Color
+    var EJS_core = "gambatte";
 
-    // ROM Game Boy Color
+    // ==========================================
+    // ROM
+    // ==========================================
+
+    // Cambia este nombre por tu ROM
     var EJS_gameUrl = "./Pokemonrojo.gbc";
 
-    // EmulatorJS
+    // ==========================================
+    // EMULATORJS
+    // ==========================================
+
     var EJS_pathtodata =
         "https://cdn.jsdelivr.net/gh/ethanaobrien/emulatorjs@main/data/";
 
     // Iniciar automáticamente
     var EJS_startOnLoaded = true;
 
-    // Pantalla completa
+    // Intentar fullscreen
     var EJS_fullscreenOnLoaded = true;
 
-    // Menú EmulatorJS
+    // Mostrar menú
     var EJS_menuEnabled = true;
 
-    // Controles
+    // Controles táctiles
     var EJS_controlScheme = 0;
 
-    // ==============================
+
+    // ==========================================
     // CARGAR EMULATORJS
-    // ==============================
+    // ==========================================
 
     var script = document.createElement("script");
 
     script.src = EJS_pathtodata + "loader.js";
 
     script.onload = function () {
+
         console.log("EmulatorJS cargado correctamente.");
+
     };
 
     script.onerror = function () {
+
         console.error("No se pudo cargar EmulatorJS.");
-        alert("Error: no se pudo cargar EmulatorJS.");
+
+        alert(
+            "Error: no se pudo cargar EmulatorJS."
+        );
+
     };
 
     document.head.appendChild(script);
+
+
+    // ==========================================
+    // FULLSCREEN
+    // ==========================================
+
+    function activarFullscreen() {
+
+        var elemento = document.documentElement;
+
+        if (elemento.requestFullscreen) {
+
+            elemento.requestFullscreen();
+
+        } else if (elemento.webkitRequestFullscreen) {
+
+            elemento.webkitRequestFullscreen();
+
+        } else if (elemento.msRequestFullscreen) {
+
+            elemento.msRequestFullscreen();
+
+        }
+
+    }
+
+
+    // ==========================================
+    // ACTIVAR FULLSCREEN AL TOCAR LA PANTALLA
+    // ==========================================
+
+    document.addEventListener(
+        "touchstart",
+        function () {
+
+            if (!document.fullscreenElement) {
+
+                try {
+
+                    activarFullscreen();
+
+                } catch (e) {
+
+                    console.log(
+                        "Fullscreen requiere interacción."
+                    );
+
+                }
+
+            }
+
+        },
+        {
+            once: true
+        }
+    );
+
 </script>
 
 </body>
