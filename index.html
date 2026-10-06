@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width,
+                   initial-scale=1.0,
+                   maximum-scale=1.0,
+                   user-scalable=no">
+
+    <title>PokemonRojo_GBC</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            overflow: hidden;
+        }
+
+        #game-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background: #000;
+        }
+
+        canvas {
+            touch-action: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<div id="game-container"></div>
+
+<script>
+    // ==============================
+    // CONFIGURACIÓN EMULATORJS
+    // ==============================
+
+    // Contenedor
+    var EJS_player = "#game-container";
+
+    // Game Boy / Game Boy Color
+    var EJS_core = "gambatte";
+
+    // ROM Game Boy Color
+    var EJS_gameUrl = "./Pokemonrojo.gb";
+
+    // EmulatorJS
+    var EJS_pathtodata =
+        "https://cdn.jsdelivr.net/gh/ethanaobrien/emulatorjs@main/data/";
+
+    // Iniciar automáticamente
+    var EJS_startOnLoaded = true;
+
+    // Pantalla completa
+    var EJS_fullscreenOnLoaded = true;
+
+    // Menú EmulatorJS
+    var EJS_menuEnabled = true;
+
+    // Controles
+    var EJS_controlScheme = 0;
+
+    // ==============================
+    // CARGAR EMULATORJS
+    // ==============================
+
+    var script = document.createElement("script");
+
+    script.src = EJS_pathtodata + "loader.js";
+
+    script.onload = function () {
+        console.log("EmulatorJS cargado correctamente.");
+    };
+
+    script.onerror = function () {
+        console.error("No se pudo cargar EmulatorJS.");
+        alert("Error: no se pudo cargar EmulatorJS.");
+    };
+
+    document.head.appendChild(script);
+</script>
+
+</body>
+</html>
