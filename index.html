@@ -3,862 +3,97 @@
 <html lang="es">
 
 <head>
-
-    <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width,
-                   initial-scale=1.0,
-                   maximum-scale=1.0,
-                   user-scalable=no">
-
-    <title>Game Boy Color</title>
-
-    <style>
-
-        * {
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        html,
-        body {
-
-            margin: 0;
-            padding: 0;
-
-            width: 100%;
-            height: 100%;
-
-            background: #111;
-
-            overflow: hidden;
-
-            touch-action: none;
-
-            font-family: Arial, sans-serif;
-        }
-
-
-        /* =========================================
-           GAME BOY
-        ========================================= */
-
-        #gameboy {
-
-            position: relative;
-
-            width: min(94vw, 430px);
-
-            height: min(96vh, 760px);
-
-            background:
-                linear-gradient(
-                    145deg,
-                    #c5c5c5,
-                    #929292
-                );
-
-            border-radius:
-                22px 22px 55px 22px;
-
-            border: 3px solid #666;
-
-            box-shadow:
-
-                inset 0 0 0 3px #dedede,
-
-                inset -8px -10px 15px
-                rgba(0,0,0,.25),
-
-                0 15px 35px
-                rgba(0,0,0,.7);
-
-            padding: 20px 18px;
-
-            display: flex;
-
-            flex-direction: column;
-        }
-
-
-        /* =========================================
-           LOGO
-        ========================================= */
-
-        #logo {
-
-            text-align: center;
-
-            font-size: 20px;
-
-            font-weight: bold;
-
-            letter-spacing: 2px;
-
-            color: #333;
-
-            margin-bottom: 10px;
-
-            text-shadow:
-                1px 1px #eee;
-        }
-
-
-        #logo span {
-
-            color: #2459a6;
-
-        }
-
-
-        /* =========================================
-           MARCO PANTALLA
-        ========================================= */
-
-        #screen-frame {
-
-            width: 100%;
-
-            background: #303030;
-
-            border-radius:
-                10px 10px 28px 10px;
-
-            padding:
-                12px 12px 16px;
-
-            box-shadow:
-
-                inset 0 3px 4px
-                rgba(0,0,0,.7),
-
-                0 2px 2px
-                rgba(255,255,255,.3);
-        }
-
-
-        #screen-header {
-
-            height: 15px;
-
-            color: #777;
-
-            font-size: 8px;
-
-            letter-spacing: 2px;
-
-            margin-bottom: 6px;
-        }
-
-
-        #led {
-
-            display: inline-block;
-
-            width: 7px;
-
-            height: 7px;
-
-            background: #d00000;
-
-            border-radius: 50%;
-
-            margin-right: 5px;
-
-            box-shadow:
-                0 0 5px #f00;
-        }
-
-
-        /* =========================================
-           PANTALLA
-        ========================================= */
-
-        #game-container {
-
-            width: 100%;
-
-            aspect-ratio: 10 / 9;
-
-            background: #8bac0f;
-
-            overflow: hidden;
-
-            border: 4px solid #111;
-
-            position: relative;
-        }
-
-
-        #game-container canvas {
-
-            width: 100% !important;
-
-            height: 100% !important;
-
-            object-fit: contain;
-
-            image-rendering: pixelated;
-        }
-
-
-        /* =========================================
-           CONTROLES VISUALES
-        ========================================= */
-
-        #controls-area {
-
-            position: relative;
-
-            flex: 1;
-
-            min-height: 245px;
-
-            margin-top: 15px;
-        }
-
-
-        /* =========================================
-           D-PAD
-        ========================================= */
-
-        #dpad {
-
-            position: absolute;
-
-            left: 22px;
-
-            top: 42px;
-
-            width: 120px;
-
-            height: 120px;
-        }
-
-
-        .dpad {
-
-            position: absolute;
-
-            background: #202020;
-
-            border-radius: 5px;
-
-            box-shadow:
-                inset 2px 2px 3px #444,
-                3px 3px 5px rgba(0,0,0,.4);
-        }
-
-
-        .dpad.vertical {
-
-            width: 40px;
-
-            height: 120px;
-
-            left: 40px;
-
-            top: 0;
-        }
-
-
-        .dpad.horizontal {
-
-            width: 120px;
-
-            height: 40px;
-
-            left: 0;
-
-            top: 40px;
-        }
-
-
-        /* =========================================
-           BOTONES A / B
-        ========================================= */
-
-        #action-buttons {
-
-            position: absolute;
-
-            right: 10px;
-
-            top: 40px;
-
-            width: 150px;
-
-            height: 110px;
-
-            transform: rotate(-15deg);
-        }
-
-
-        .action {
-
-            position: absolute;
-
-            width: 58px;
-
-            height: 58px;
-
-            border-radius: 50%;
-
-            background: #9d003d;
-
-            border: 3px solid #70002c;
-
-            box-shadow:
-
-                inset 2px 3px 3px
-                rgba(255,255,255,.25),
-
-                3px 5px 6px
-                rgba(0,0,0,.4);
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            color: white;
-
-            font-weight: bold;
-
-            font-size: 18px;
-        }
-
-
-        #button-b {
-
-            left: 0;
-
-            top: 30px;
-        }
-
-
-        #button-a {
-
-            right: 0;
-
-            top: 0;
-        }
-
-
-        /* =========================================
-           SELECT / START
-        ========================================= */
-
-        #menu-buttons {
-
-            position: absolute;
-
-            left: 50%;
-
-            bottom: 18px;
-
-            transform: translateX(-50%);
-
-            display: flex;
-
-            gap: 15px;
-        }
-
-
-        .menu-button {
-
-            width: 72px;
-
-            height: 18px;
-
-            background: #555;
-
-            border-radius: 12px;
-
-            transform: rotate(-12deg);
-
-            box-shadow:
-
-                inset 1px 2px 2px
-                rgba(255,255,255,.3),
-
-                2px 3px 4px
-                rgba(0,0,0,.4);
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            color: #222;
-
-            font-size: 8px;
-
-            font-weight: bold;
-
-            letter-spacing: 1px;
-        }
-
-
-        /* =========================================
-           FULLSCREEN
-        ========================================= */
-
-        #fullscreen {
-
-            position: fixed;
-
-            top: 10px;
-
-            right: 10px;
-
-            z-index: 99999;
-
-            width: 42px;
-
-            height: 42px;
-
-            border: none;
-
-            border-radius: 50%;
-
-            background:
-                rgba(0,0,0,.75);
-
-            color: white;
-
-            font-size: 20px;
-        }
-
-
-        /* =========================================
-           CELULARES PEQUEÑOS
-        ========================================= */
-
-        @media(max-height:650px) {
-
-            #gameboy {
-
-                height: 96vh;
-
-                padding: 10px;
-            }
-
-            #logo {
-
-                font-size: 15px;
-
-                margin-bottom: 5px;
-            }
-
-            #controls-area {
-
-                min-height: 170px;
-
-                margin-top: 8px;
-            }
-
-            #dpad {
-
-                transform: scale(.75);
-
-                transform-origin:
-                    top left;
-
-                top: 15px;
-            }
-
-            #action-buttons {
-
-                transform:
-                    scale(.75)
-                    rotate(-15deg);
-
-                transform-origin:
-                    top right;
-
-                top: 15px;
-            }
-        }
-
-    </style>
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width,
+               initial-scale=1.0,
+               maximum-scale=1.0,
+               user-scalable=no">
+
+<title>Pokemon Rojo</title>
+
+<style>
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #000;
+}
+
+#game-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+}
+
+canvas {
+    image-rendering: pixelated !important;
+    image-rendering: crisp-edges !important;
+    max-width: 100%;
+    max-height: 100%;
+}
+</style>
 
 </head>
 
-
 <body>
 
-
-<button id="fullscreen"
-        onclick="activarFullscreen()">
-
-    ⛶
-
-</button>
-
-
-<div id="gameboy">
-
-
-    <!-- LOGO -->
-
-    <div id="logo">
-
-        GAME BOY
-
-        <span>COLOR</span>
-
-    </div>
-
-
-    <!-- PANTALLA -->
-
-    <div id="screen-frame">
-
-        <div id="screen-header">
-
-            <span id="led"></span>
-
-            POWER
-
-        </div>
-
-
-        <div id="game-container"></div>
-
-    </div>
-
-
-    <!-- CONTROLES -->
-
-    <div id="controls-area">
-
-
-        <!-- D-PAD -->
-
-        <div id="dpad">
-
-            <div class="dpad vertical"></div>
-
-            <div class="dpad horizontal"></div>
-
-        </div>
-
-
-        <!-- A / B -->
-
-        <div id="action-buttons">
-
-            <div class="action"
-                 id="button-b">
-
-                B
-
-            </div>
-
-
-            <div class="action"
-                 id="button-a">
-
-                A
-
-            </div>
-
-        </div>
-
-
-        <!-- START / SELECT -->
-
-        <div id="menu-buttons">
-
-            <div class="menu-button">
-
-                SELECT
-
-            </div>
-
-            <div class="menu-button">
-
-                START
-
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
+<div id="game-container"></div>
 
 <script>
 
+/* ===== CAMBIAR JUEGO AQUÍ ===== */
 
-    /* =========================================
-       EMULATORJS
-    ========================================= */
+var EJS_gameUrl = "./PokemonRed.gb";
+var EJS_gameName = "Pokemon Rojo";
 
+/* =============================== */
 
-    var EJS_player =
-        "#game-container";
+var EJS_core = "gambatte";
 
+var EJS_pathtodata =
+    "https://cdn.jsdelivr.net/gh/ethanaobrien/emulatorjs@main/data/";
 
-    /*
-       Gambatte es el núcleo recomendado
-       para GB / GBC.
-    */
+var EJS_startOnLoaded = true;
 
-    var EJS_core =
-        "gambatte";
+var EJS_fullscreenOnLoaded = true;
 
+var EJS_menuEnabled = true;
 
-    /*
-       ======================================
-       ROM
-       ======================================
+var EJS_controlScheme = "gb";
 
-       Coloca PokemonRed.gb
-       en la misma carpeta.
-    */
+var EJS_defaultOptions = {
+    "gambatte_gb_hwmode": "Auto",
+    "gambatte_gb_colorization": "auto",
+    "gambatte_gbc_color_correction": "GBC only",
+    "gambatte_gbc_color_correction_mode": "accurate",
+    "gambatte_gbc_frontlight_position": "central",
+    "gambatte_mix_frames": "disabled"
+};
 
-    var EJS_gameUrl =
-        "./Pokemonrojo.gb";
-
-
-    /*
-       Nombre del juego
-    */
-
-    var EJS_gameName =
-        "Pokemon Rojo";
-
-
-    /*
-       Datos EmulatorJS
-    */
-
-    var EJS_pathtodata =
-        "https://cdn.jsdelivr.net/gh/ethanaobrien/emulatorjs@main/data/";
-
-
-    /*
-       Iniciar automáticamente
-    */
-
-    var EJS_startOnLoaded =
-        true;
-
-
-    /*
-       Pantalla completa automática
-    */
-
-    var EJS_fullscreenOnLoaded =
-        false;
-
-
-    /*
-       Controles Game Boy
-    */
-
-    var EJS_controlScheme =
-        "gb";
-
-
-    /*
-       Menú
-    */
-
-    var EJS_menuEnabled =
-        true;
-
-
-    /*
-       ======================================
-       CONFIGURACIÓN GAMBATTE
-       ======================================
-
-       ESTA ES LA PARTE IMPORTANTE.
-    */
-
-    var EJS_defaultOptions = {
-
-        /*
-         * Colorización automática.
-         *
-         * Gambatte busca automáticamente
-         * la paleta más apropiada para
-         * el juego.
-         */
-
-        "gambatte_gb_colorization":
-            "auto",
-
-
-        /*
-         * Corrección de color como
-         * pantalla real de Game Boy Color.
-         */
-
-        "gambatte_gbc_color_correction":
-            "GBC only",
-
-
-        /*
-         * Corrección precisa.
-         */
-
-        "gambatte_gbc_color_correction_mode":
-            "accurate",
-
-
-        /*
-         * Iluminación central de la pantalla.
-         */
-
-        "gambatte_gbc_frontlight_position":
-            "central",
-
-
-        /*
-         * Hardware automático.
-         *
-         * Esto permite que Gambatte
-         * determine GB/GBC.
-         */
-
-        "gambatte_gb_hwmode":
-            "Auto",
-
-
-        /*
-         * Ghosting LCD.
-         *
-         * Lo dejamos desactivado para
-         * una imagen más limpia.
-         */
-
-        "gambatte_mix_frames":
-            "disabled"
-
-    };
-
-
-    /* =========================================
-       CARGAR EMULATORJS
-    ========================================= */
-
-    var script =
-        document.createElement("script");
-
-
-    script.src =
-        EJS_pathtodata +
-        "loader.js";
-
-
-    script.onload =
-        function() {
-
-            console.log(
-                "EmulatorJS cargado."
-            );
-
-            console.log(
-                "Gambatte: colorización automática."
-            );
-
-        };
-
-
-    script.onerror =
-        function() {
-
-            alert(
-                "No se pudo cargar EmulatorJS."
-            );
-
-        };
-
-
-    document.head.appendChild(script);
-
-
-
-    /* =========================================
-       FULLSCREEN
-    ========================================= */
-
-    function activarFullscreen() {
-
-        var elemento =
-            document.documentElement;
-
-
-        if (
-            elemento.requestFullscreen
-        ) {
-
-            elemento.requestFullscreen();
-
-        }
-
-        else if (
-            elemento.webkitRequestFullscreen
-        ) {
-
-            elemento.webkitRequestFullscreen();
-
-        }
-
+function fullscreen() {
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(function(){});
     }
+}
 
+window.addEventListener("load", function() {
+    setTimeout(fullscreen, 1500);
+});
 
-    /*
-       Fullscreen después del
-       primer toque.
-    */
-
-    document.addEventListener(
-
-        "touchstart",
-
-        function() {
-
-            if (
-                !document.fullscreenElement
-            ) {
-
-                try {
-
-                    activarFullscreen();
-
-                }
-
-                catch(e) {
-
-                    console.log(
-                        "Fullscreen requiere interacción."
-                    );
-
-                }
-
-            }
-
-        },
-
-        {
-            once: true
-        }
-
-    );
-
+document.addEventListener("click", fullscreen, { once: true });
+document.addEventListener("touchstart", fullscreen, { once: true });
 
 </script>
 
-</body>
+<script src="https://cdn.jsdelivr.net/gh/ethanaobrien/emulatorjs@main/data/loader.js"></script>
 
+</body>
 </html>
-```
+
